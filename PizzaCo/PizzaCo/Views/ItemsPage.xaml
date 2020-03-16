@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:Converters="clr-namespace:PizzaCo.Converters"
+             mc:Ignorable="d"
+             x:Class="PizzaCo.Views.ItemsPage"
+             Title="{Binding Title}"
+             x:Name="BrowseItemsPage">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Converters:ItemToIndex x:Key="ItemToIndex"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    
+    <StackLayout>
+        <ListView x:Name="ItemsListView"
+                ItemsSource="{Binding PizzaFavorites}"
+                SeparatorColor="Black"
+                HasUnevenRows="true"
+                RefreshCommand="{Binding LoadItemsCommand}"
+                IsPullToRefreshEnabled="true"
+                IsRefreshing="{Binding IsBusy, Mode=OneWay}"
+                >
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <StackLayout Padding="10">
+                            <StackLayout Orientation="Horizontal">
+                                <Label Text="{Binding ., Converter={StaticResource ItemToIndex}, ConverterParameter={x:Reference ItemsListView}}" HorizontalOptions="Start" />
+
+                                <Label Text="{Binding Count, StringFormat='Order Count: {0:0}'}"
+                                LineBreakMode="NoWrap"
+                                Style="{DynamicResource ListItemDetailTextStyle}"
+                                FontSize="13"
+                                HorizontalOptions="EndAndExpand"/>
+                            </StackLayout>
+                            
+                            <Label Text="{Binding Toppings}" 
+                                LineBreakMode="NoWrap" 
+                                Style="{DynamicResource ListItemTextStyle}" 
+                                FontSize="16" />
+                        </StackLayout>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </StackLayout>
+
+</ContentPage>
